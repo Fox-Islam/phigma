@@ -37,12 +37,7 @@ readonly class Comments
             'query' => $parameters,
         ]);
 
-        $collection = new Collection(Comment::class);
-        if (empty($body)) {
-            return $collection;
-        }
-
-        return $collection->create($body['comments']);
+        return Collection::create(Comment::class, $body['comments'] ?? []);
     }
 
     /**
@@ -119,7 +114,7 @@ readonly class Comments
             return null;
         }
 
-        $body['reactions'] = (new Collection(Reaction::class))->create($body['reactions']);
+        $body['reactions'] = Collection::create(Reaction::class, $body['reactions']);
         return $body;
     }
 

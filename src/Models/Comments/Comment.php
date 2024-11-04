@@ -12,7 +12,7 @@ use Phox\Phigma\Models\User;
 
 class Comment
 {
-    public const ID_METHOD = 'getId';
+    public const string ID_METHOD = 'getId';
 
     public function __construct(
         private string|null $id = null,
@@ -111,7 +111,7 @@ class Comment
             return null;
         }
 
-        return (new Collection(Reaction::class))->create($this->reactions);
+        return Collection::create(Reaction::class, $this->reactions);
     }
 
     public function id(string $id): Comment

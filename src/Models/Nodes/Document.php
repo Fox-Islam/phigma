@@ -47,7 +47,7 @@ class Document extends Node
             return null;
         }
 
-        return (new Collection(Node::class))->create($this->children);
+        return Collection::create(Node::class, $this->children);
     }
 
     public static function create(array $data): Document

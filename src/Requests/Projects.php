@@ -23,12 +23,8 @@ readonly class Projects
     public function getTeamProjects(string $id): Collection
     {
         $body = $this->client->get("https://api.figma.com/v1/teams/{$id}/projects");
-        $collection = new Collection(Project::class);
-        if (empty($body) || ! isset($body['projects'])) {
-            return $collection;
-        }
 
-        return $collection->create($body['projects']);
+        return Collection::create(Project::class, $body['projects'] ?? []);
     }
 
     /**
@@ -45,11 +41,7 @@ readonly class Projects
                 'branch_data' => $branchData,
             ]
         ]);
-        $collection = new Collection(File::class);
-        if (empty($body) || ! isset($body['files'])) {
-            return $collection;
-        }
 
-        return $collection->create($body['files']);
+        return Collection::create(File::class, $body['files'] ?? []);
     }
 }

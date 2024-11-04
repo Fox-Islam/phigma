@@ -33,12 +33,8 @@ readonly class DevResources
         $body = $this->client->get("https://api.figma.com/v1/files/{$fileKey}/dev_resources", [
             'query' => $queryParams,
         ]);
-        $collection = new Collection(DevResource::class);
-        if (empty($body) || ! isset($body['dev_resources'])) {
-            return $collection;
-        }
 
-        return $collection->create($body['dev_resources']);
+        return Collection::create(DevResource::class, $body['dev_resources'] ?? []);
     }
 
     /**
@@ -62,7 +58,7 @@ readonly class DevResources
             return [];
         }
 
-        $body['links_created'] = (new Collection(DevResource::class))->create($body['links_created']);
+        $body['links_created'] = Collection::create(DevResource::class, $body['links_created']);
         return $body;
     }
 

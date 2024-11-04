@@ -22,11 +22,7 @@ readonly class Versions
     public function getVersions(string $key): Collection
     {
         $body = $this->client->get("https://api.figma.com/v1/files/{$key}/versions");
-        $collection = new Collection(Version::class);
-        if (empty($body) || ! isset($body['versions'])) {
-            return $collection;
-        }
 
-        return $collection->create($body['versions']);
+        return Collection::create(Version::class, $body['versions'] ?? []);
     }
 }

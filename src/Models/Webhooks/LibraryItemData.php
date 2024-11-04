@@ -4,7 +4,7 @@ namespace Phox\Phigma\Models\Webhooks;
 
 class LibraryItemData
 {
-    public const ID_METHOD = 'getKey';
+    public const string ID_METHOD = 'getKey';
 
     public function __construct(
         private string|null $key = null,

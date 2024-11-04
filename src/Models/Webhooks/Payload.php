@@ -8,7 +8,7 @@ use Phox\Phigma\Models\User;
 
 class Payload
 {
-    public const ID_METHOD = 'getWebhookId';
+    public const string ID_METHOD = 'getWebhookId';
 
     public function __construct(
         private string|null $event_type = null,
@@ -115,7 +115,8 @@ class Payload
             return null;
         }
 
-        return (new Collection(LibraryItemData::class))->create($this->created_components);
+
+        return Collection::create(LibraryItemData::class, $this->created_components);
     }
 
     /**
@@ -127,7 +128,7 @@ class Payload
             return null;
         }
 
-        return (new Collection(LibraryItemData::class))->create($this->created_styles);
+        return Collection::create(LibraryItemData::class, $this->created_styles);
     }
 
     /**
@@ -139,7 +140,7 @@ class Payload
             return null;
         }
 
-        return (new Collection(LibraryItemData::class))->create($this->created_variables);
+        return Collection::create(LibraryItemData::class, $this->created_variables);
     }
 
     /**
@@ -151,7 +152,7 @@ class Payload
             return null;
         }
 
-        return (new Collection(LibraryItemData::class))->create($this->modified_components);
+        return Collection::create(LibraryItemData::class, $this->modified_components);
     }
 
     /**
@@ -163,7 +164,7 @@ class Payload
             return null;
         }
 
-        return (new Collection(LibraryItemData::class))->create($this->modified_styles);
+        return Collection::create(LibraryItemData::class, $this->modified_styles);
     }
 
     /**
@@ -175,7 +176,7 @@ class Payload
             return null;
         }
 
-        return (new Collection(LibraryItemData::class))->create($this->modified_variables);
+        return Collection::create(LibraryItemData::class, $this->modified_variables);
     }
 
     /**
@@ -187,7 +188,7 @@ class Payload
             return null;
         }
 
-        return (new Collection(LibraryItemData::class))->create($this->deleted_components);
+        return Collection::create(LibraryItemData::class, $this->deleted_components);
     }
 
     /**
@@ -199,7 +200,7 @@ class Payload
             return null;
         }
 
-        return (new Collection(LibraryItemData::class))->create($this->deleted_styles);
+        return Collection::create(LibraryItemData::class, $this->deleted_styles);
     }
 
     /**
@@ -211,7 +212,7 @@ class Payload
             return null;
         }
 
-        return (new Collection(LibraryItemData::class))->create($this->deleted_variables);
+        return Collection::create(LibraryItemData::class, $this->deleted_variables);
     }
 
     /**
@@ -223,7 +224,7 @@ class Payload
             return null;
         }
 
-        return (new Collection(CommentFragment::class))->create($this->comment);
+        return Collection::create(CommentFragment::class, $this->comment);
     }
 
     public function getCommentId(): ?int
@@ -240,7 +241,7 @@ class Payload
             return null;
         }
 
-        return (new Collection(User::class))->create($this->mentions);
+        return Collection::create(User::class, $this->mentions);
     }
 
     public function getOrderId(): ?int

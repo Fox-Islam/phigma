@@ -146,12 +146,8 @@ readonly class Webhooks
     public function getTeamWebhooks(string $teamId): Collection
     {
         $body = $this->client->get("https://api.figma.com/v2/teams/$teamId/webhooks");
-        $collection = new Collection(Webhook::class);
-        if (empty($body) || ! isset($body['webhooks'])) {
-            return $collection;
-        }
 
-        return $collection->create($body['webhooks']);
+        return Collection::create(Webhook::class, $body['webhooks'] ?? []);
     }
 
     /**
@@ -163,11 +159,7 @@ readonly class Webhooks
     public function getWebhookRequests(string $webhookId): Collection
     {
         $body = $this->client->get("https://api.figma.com/v2/webhooks/$webhookId/requests");
-        $collection = new Collection(WebhookRequest::class);
-        if (empty($body) || ! isset($body['requests'])) {
-            return $collection;
-        }
 
-        return $collection->create($body['requests']);
+        return Collection::create(WebhookRequest::class, $body['requests'] ?? []);
     }
 }

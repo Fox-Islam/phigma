@@ -93,17 +93,11 @@ class File
     }
 
     /**
-     * @return Collection<Branch>|null
+     * @return Collection<Branch>
      */
-    public function getBranches(): ?Collection
+    public function getBranches(): Collection
     {
-        if (! $this->branches) {
-            return null;
-        }
-
-        $collection = new Collection(Branch::class);
-        $collection->create($this->branches);
-        return $collection;
+        return Collection::create(Branch::class, $this->branches ?? []);
     }
 
     public function document(array $document): File

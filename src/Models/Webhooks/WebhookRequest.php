@@ -6,7 +6,7 @@ use Carbon\Carbon;
 
 class WebhookRequest
 {
-    public const ID_METHOD = 'getWebhookId';
+    public const string ID_METHOD = 'getWebhookId';
 
     public function __construct(
         private string|null $webhook_id = null,

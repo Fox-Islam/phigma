@@ -7,6 +7,12 @@ namespace Phox\Phigma\Models;
  */
 class Collection
 {
+    public const string ID_METHOD = 'getKey';
+    /**
+     * @var array<string|int, T>
+     */
+    private array $itemHashMap = [];
+
     /**
      * @param class-string<T> $class
      */
@@ -53,6 +59,10 @@ class Collection
         }
 
         $this->items[] = $item;
+
+        $identifierMethodName = $this->class::ID_METHOD;
+        $this->itemHashMap[$item->$identifierMethodName()] = $item;
+
         return $this;
     }
 
@@ -72,12 +82,42 @@ class Collection
 
         foreach ($this->items as $index => $item) {
             if ($item->$identifierMethodName() === $itemIdentifier) {
-                unset($this->items[$index]);
+                unset($this->items[$index], $this->itemHashMap[$itemIdentifier]);
                 return $this;
             }
         }
 
         return $this;
+    }
+
+    public function count(): int
+    {
+        return count($this->items);
+    }
+
+    public function isEmpty(): bool
+    {
+        return empty($this->items);
+    }
+
+    public function getKey(): string
+    {
+        $itemKeys = [];
+        foreach ($this->items as $item) {
+            $identifierMethodName = $this->class::ID_METHOD;
+            $itemKeys[] = $item->$identifierMethodName();
+        }
+
+        $itemKeys = implode('-', $itemKeys);
+        return "{$this->class}-{$itemKeys}";
+    }
+
+    /**
+     * @return T|null
+     */
+    public function find(string|int $identifier)
+    {
+        return $this->itemHashMap[$identifier] ?? null;
     }
 
     public function toArray(): array
@@ -95,13 +135,14 @@ class Collection
     }
 
     /**
+     * @param class-string<T> $class
      * @return Collection<T>
      */
-    public function create(array $data): Collection
+    public static function create(string $class, array $data): Collection
     {
-        $collection = new Collection($this->class);
+        $collection = new Collection($class);
         foreach ($data as $itemData) {
-            $collection->addItem($this->class::create($itemData));
+            $collection->addItem($class::create($itemData));
         }
 
         return $collection;

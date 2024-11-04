@@ -7,7 +7,7 @@ use Phox\Phigma\Models\Collection;
 
 class File
 {
-    public const ID_METHOD = 'getKey';
+    public const string ID_METHOD = 'getKey';
 
     public function __construct(
         private string|null $key = null,
@@ -42,17 +42,11 @@ class File
     }
 
     /**
-     * @return Collection<Branch>|null
+     * @return Collection<Branch>
      */
-    public function getBranches(): ?Collection
+    public function getBranches(): Collection
     {
-        if (! $this->branches) {
-            return null;
-        }
-
-        $collection = new Collection(Branch::class);
-        $collection->create($this->branches);
-        return $collection;
+        return Collection::create(Branch::class, $this->branches ?? []);
     }
 
     public function key(string $key): File

@@ -4,7 +4,7 @@ namespace Phox\Phigma\Models;
 
 class User
 {
-    public const ID_METHOD = 'getId';
+    public const string ID_METHOD = 'getId';
 
     public function __construct(
         private ?string $id = null,

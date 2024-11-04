@@ -4,8 +4,8 @@ namespace Phox\Phigma\Models\Webhooks;
 
 class CommentFragment
 {
-    public const ID_METHOD = 'getText';
-    
+    public const string ID_METHOD = 'getText';
+
     public function __construct(
         private string|null $text = null,
         private string|null $mention = null,
