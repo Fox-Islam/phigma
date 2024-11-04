@@ -16,11 +16,11 @@ readonly class Users
      * @link https://www.figma.com/developers/api#users Figma API reference
      * @throws GuzzleException
      */
-    public function getMe(): ?User
+    public function getMe(): User
     {
         $body = $this->client->get('https://api.figma.com/v1/me');
         if (empty($body)) {
-            return null;
+            return new User();
         }
 
         return User::create($body);

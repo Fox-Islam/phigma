@@ -3,6 +3,7 @@
 namespace Phox\Phigma\Models\Comments;
 
 use Carbon\Carbon;
+use Phox\Phigma\Models\Collection;
 use Phox\Phigma\Models\Properties\FrameOffset;
 use Phox\Phigma\Models\Properties\FrameOffsetRegion;
 use Phox\Phigma\Models\Properties\Region;
@@ -100,9 +101,9 @@ class Comment
     }
 
     /**
-     * @return ReactionCollection|null
+     * @return Collection<Reaction>|null
      */
-    public function getReactions(): ?ReactionCollection
+    public function getReactions(): ?Collection
     {
         if (! $this->reactions) {
             return null;

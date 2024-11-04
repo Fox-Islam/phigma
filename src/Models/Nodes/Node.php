@@ -132,7 +132,7 @@ class Node
         return get_object_vars($this);
     }
 
-    public static function create(array $data): Node
+    public static function create(array $data): Node|Document
     {
         $node = new Node();
 

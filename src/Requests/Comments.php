@@ -5,8 +5,8 @@ namespace Phox\Phigma\Requests;
 use GuzzleHttp\Exception\GuzzleException;
 use JsonException;
 use Phox\Phigma\Client;
+use Phox\Phigma\Models\Collection;
 use Phox\Phigma\Models\Comments\Comment;
-use Phox\Phigma\Models\Comments\Reaction;
 use Phox\Phigma\Models\Comments\ReactionCollection;
 use Phox\Phigma\Models\Properties\FrameOffset;
 use Phox\Phigma\Models\Properties\FrameOffsetRegion;
@@ -23,10 +23,10 @@ readonly class Comments
      * @link https://www.figma.com/developers/api#get-comments-endpoint Figma API reference
      * @param string $key A file key or branch key to get comments from.
      * @param bool|null $asMarkdown If enabled, will return comments as their markdown equivalents when applicable
-     * @return Comment[]|null
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @return Collection<Comment>
+     * @throws GuzzleException
      */
-    public function getComments(string $key, bool $asMarkdown = null): array|null
+    public function getComments(string $key, bool $asMarkdown = null): Collection
     {
         $parameters = [];
         if ($asMarkdown !== null) {
@@ -37,15 +37,12 @@ readonly class Comments
             'query' => $parameters,
         ]);
 
+        $collection = new Collection(Comment::class);
         if (empty($body)) {
-            return null;
+            return $collection;
         }
 
-        $comments = [];
-        foreach ($body['comments'] as $comment) {
-            $comments[] = Comment::create($comment);
-        }
-        return $comments;
+        return $collection->createItemsFromArray($body['comments']);
     }
 
     /**
@@ -54,7 +51,7 @@ readonly class Comments
      * @param string $message The text contents of the comment to post
      * @param string|null $commentId The id of the comment to reply to, if any
      * @param Vector|FrameOffset|Region|FrameOffsetRegion|array|null $clientMeta
-     * @return Comment|null
+     * @return Comment
      * @throws GuzzleException
      * @throws JsonException
      */
@@ -63,7 +60,7 @@ readonly class Comments
         string $message,
         string $commentId = null,
         Vector|FrameOffset|Region|FrameOffsetRegion|array|null $clientMeta = null
-    ): ?Comment {
+    ): Comment {
         $bodyParams = [
             'message' => $message,
         ];
@@ -83,7 +80,7 @@ readonly class Comments
         ]);
 
         if (empty($body)) {
-            return null;
+            return new Comment();
         }
 
         return Comment::create($body);
@@ -107,7 +104,7 @@ readonly class Comments
      * @param string|null $cursor Cursor for pagination
      * @throws GuzzleException
      */
-    public function getCommentReactions(string $key, string $commentId, string $cursor = null): ?array
+    public function getReactions(string $key, string $commentId, string $cursor = null): ?array
     {
         $queryParams = [];
         if ($cursor) {
@@ -134,7 +131,7 @@ readonly class Comments
      * @throws GuzzleException
      * @throws JsonException
      */
-    public function postCommentReaction(string $key, string $commentId, string $emoji): ?array
+    public function postReaction(string $key, string $commentId, string $emoji): ?array
     {
         $bodyParams = [
             'emoji' => $emoji,
@@ -158,7 +155,7 @@ readonly class Comments
      * @param string $emoji The shortcode of the emoji to remove
      * @throws GuzzleException
      */
-    public function deleteCommentReaction(string $key, string $commentId, string $emoji): ?array
+    public function deleteReaction(string $key, string $commentId, string $emoji): ?array
     {
         $queryParams = [
             'emoji' => $emoji,

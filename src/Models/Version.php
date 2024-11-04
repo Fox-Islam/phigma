@@ -40,6 +40,10 @@ class Version
 
     public function getUser(): ?User
     {
+        if (! $this->user) {
+            return null;
+        }
+
         return User::create($this->user);
     }
 

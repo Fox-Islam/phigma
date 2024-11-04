@@ -2,18 +2,38 @@
 
 namespace Phox\Phigma\Models;
 
+/**
+ * @template T
+ */
 class Collection
 {
+    /**
+     * @param class-string<T> $class
+     */
     public function __construct(
-        private string $class,
+        private readonly string $class,
         private array $items = [],
     ) {}
 
+    /**
+     * @return array<T>|null
+     */
     public function getItems(): ?array
     {
         return $this->items;
     }
 
+    /**
+     * @return T|null
+     */
+    public function getItem(int $index)
+    {
+        return $this->items[$index];
+    }
+
+    /**
+     * @return Collection<T>
+     */
     public function items(array $items): Collection
     {
         foreach ($items as $item) {
@@ -23,6 +43,9 @@ class Collection
         return $this;
     }
 
+    /**
+     * @return Collection<T>
+     */
     public function addItem(mixed $item): Collection
     {
         if (! $item instanceof $this->class) {
@@ -33,23 +56,50 @@ class Collection
         return $this;
     }
 
-    public function removeItem(mixed $itemToRemove): Collection
+    /**
+     * @return Collection<T>
+     */
+    public function removeItem(mixed $itemToRemove, string $identifierMethodName): Collection
     {
+        $itemIdentifier = $itemToRemove->$identifierMethodName();
+        if (! $itemIdentifier) {
+            return $this;
+        }
+
+        foreach ($this->items as $index => $item) {
+            if ($item->$identifierMethodName() === $itemIdentifier) {
+                unset($this->items[$index]);
+                return $this;
+            }
+        }
+
         return $this;
     }
 
     public function toArray(): array
     {
+        if (! $this->getItems()) {
+            return [];
+        }
+
         $items = [];
-        foreach ($this->items as $item) {
+        foreach ($this->getItems() as $item) {
             $items[] = $item->toArray();
         }
 
         return $items;
     }
 
-    public static function create(array $data): Collection|null
+    /**
+     * @return Collection<T>|null
+     */
+    public function createItemsFromArray(array $data): Collection|null
     {
-        return null;
+        $collection = new Collection($this->class);
+        foreach ($data as $itemData) {
+            $collection->addItem($this->class::create($itemData));
+        }
+
+        return $collection;
     }
 }

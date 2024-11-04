@@ -1,17 +1,17 @@
 <?php
 
-namespace Phox\Phigma\Models;
+namespace Phox\Phigma\Utils;
 
-class Helper
+class Arr
 {
-    public static function snakeCaseArrayKeys(array $inputArray)
+    public static function snakeCaseKeys(array $inputArray): array
     {
         $outputArray = [];
 
         if (array_is_list($inputArray)) {
             foreach ($inputArray as $index => $value) {
                 if (is_array($value)) {
-                    $value = self::snakeCaseArrayKeys($value);
+                    $value = self::snakeCaseKeys($value);
                 }
 
                 $outputArray[$index] = $value;
@@ -22,10 +22,14 @@ class Helper
 
         foreach ($inputArray as $key => $value) {
             if (is_array($value)) {
-                $value = self::snakeCaseArrayKeys($value);
+                $value = self::snakeCaseKeys($value);
             }
 
-            $key = strtolower(trim(preg_replace('/([A-Z])/', '_$1', $key)));
+            /**
+             * @var string $key
+             */
+            $key = preg_replace('/([A-Z])/', '_$1', $key);
+            $key = strtolower(trim($key));
             $outputArray[$key] = $value;
         }
 

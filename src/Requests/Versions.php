@@ -4,6 +4,7 @@ namespace Phox\Phigma\Requests;
 
 use GuzzleHttp\Exception\GuzzleException;
 use Phox\Phigma\Client;
+use Phox\Phigma\Models\Collection;
 use Phox\Phigma\Models\Version;
 
 readonly class Versions
@@ -16,20 +17,16 @@ readonly class Versions
      * @link https://www.figma.com/developers/api#version-history Figma API reference
      * @param string $key A file key or branch key to get version history from.
      * @throws GuzzleException
+     * @return Collection<Version>
      */
-    public function getVersions(string $key): ?array
+    public function getVersions(string $key): Collection
     {
         $body = $this->client->get("https://api.figma.com/v1/files/{$key}/versions");
-        if (empty($body)) {
-            return null;
+        $collection = new Collection(Version::class);
+        if (empty($body) || ! isset($body['versions'])) {
+            return $collection;
         }
 
-        $versions = [];
-        foreach ($body['versions'] as $version) {
-            $versions[] = Version::create($version);
-        }
-        $body['versions'] = $versions;
-
-        return $body;
+        return $collection->createItemsFromArray($body['versions']);
     }
 }

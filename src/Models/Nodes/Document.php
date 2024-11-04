@@ -2,6 +2,8 @@
 
 namespace Phox\Phigma\Models\Nodes;
 
+use Phox\Phigma\Models\Collection;
+
 class Document extends Node
 {
     public function __construct(
@@ -36,7 +38,10 @@ class Document extends Node
         return $this;
     }
 
-    public function getChildren(): ?NodeCollection
+    /**
+     * @return Collection<Node>|null
+     */
+    public function getChildren(): ?Collection
     {
         if (! $this->children) {
             return null;
@@ -45,12 +50,11 @@ class Document extends Node
         return NodeCollection::create($this->children);
     }
 
-    /**
-     * @param array $data
-     * @return Document
-     */
-    public static function create(array $data): Node
+    public static function create(array $data): Document
     {
+        /**
+         * @var Document $node
+         */
         $node = parent::create($data);
 
         if (isset($data['children']) && method_exists($node, 'children')) {

@@ -3,22 +3,25 @@
 namespace Phox\Phigma\Models\Nodes;
 
 use Carbon\Carbon;
+use Phox\Phigma\Models\Collection;
+use Phox\Phigma\Models\Projects\Branch;
 
 class File
 {
     public function __construct(
+        private ?string $name = null,
+        private ?string $role = null,
+        private ?string $lastModified = null,
+        private ?string $editorType = null,
+        private ?string $thumbnailUrl = null,
+        private ?string $version = null,
         private ?array $document = null,
         private ?array $components = null,
         private ?array $componentSets = null,
         private ?int $schemaVersion = null,
         private ?array $styles = null,
-        private ?string $name = null,
-        private ?string $lastModified = null,
-        private ?string $thumbnailUrl = null,
-        private ?string $version = null,
-        private ?string $role = null,
-        private ?string $editorType = null,
-        private ?string $linkAccess = null,
+        private ?string $mainFileKey = null,
+        private ?array $branches = null,
     ) {}
 
     public function getDocument(): ?Document
@@ -84,9 +87,23 @@ class File
         return $this->editorType;
     }
 
-    public function getLinkAccess(): ?string
+    public function getKey(): ?string
     {
-        return $this->linkAccess;
+        return $this->mainFileKey;
+    }
+
+    /**
+     * @return Collection<Branch>|null
+     */
+    public function getBranches(): ?Collection
+    {
+        if (! $this->branches) {
+            return null;
+        }
+
+        $collection = new Collection(Branch::class);
+        $collection->createItemsFromArray($this->branches);
+        return $collection;
     }
 
     public function document(array $document): File
@@ -155,9 +172,15 @@ class File
         return $this;
     }
 
-    public function linkAccess(string $linkAccess): File
+    public function key(string $key): File
     {
-        $this->linkAccess = $linkAccess;
+        $this->mainFileKey = $key;
+        return $this;
+    }
+
+    public function branches(array $branches): File
+    {
+        $this->branches = $branches;
         return $this;
     }
 
@@ -186,8 +209,11 @@ class File
         if (isset($data['editorType'])) {
             $file->editorType($data['editorType']);
         }
-        if (isset($data['linkAccess'])) {
-            $file->linkAccess($data['linkAccess']);
+        if (isset($data['mainFileKey'])) {
+            $file->key($data['mainFileKey']);
+        }
+        if (isset($data['branches'])) {
+            $file->branches($data['branches']);
         }
 
         return $file;

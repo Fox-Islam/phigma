@@ -19,6 +19,10 @@
         "nesbot/carbon": "^3.8"
     },
     "require-dev": {
-        "psy/psysh": "^0.12.4"
+        "psy/psysh": "^0.12.4",
+        "phpstan/phpstan": "^1.12"
+    },
+    "scripts": {
+        "phpstan": "vendor/bin/phpstan analyse -c phpstan.neon"
     }
 }

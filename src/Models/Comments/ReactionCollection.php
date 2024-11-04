@@ -4,6 +4,9 @@ namespace Phox\Phigma\Models\Comments;
 
 use Phox\Phigma\Models\Collection;
 
+/**
+ * @extends Collection<Reaction>
+ */
 class ReactionCollection extends Collection
 {
     public function __construct(
@@ -12,34 +15,22 @@ class ReactionCollection extends Collection
         parent::__construct(Reaction::class, $items);
     }
 
-    public function removeReaction(Reaction $reactionToRemove): ReactionCollection
+    /**
+     * @return Collection<Reaction>
+     */
+    public function removeReaction(mixed $itemToRemove): Collection
     {
-        $reactionName = $reactionToRemove->getEmoji();
-        if (! $reactionName) {
-            return $this;
-        }
-
-        foreach ($this->items as $index => $reaction) {
-            if ($reaction->getEmoji() === $reactionName) {
-                unset($this->items[$index]);
-                return $this;
-            }
-        }
-
-        return $this;
+        return $this->removeItem($itemToRemove, 'getEmoji');
     }
 
     /**
-     * @param array $data
-     * @return ReactionCollection
+     * @return Collection<Reaction>
      */
-    public static function create(array $data): ReactionCollection
+    public static function create(array $data): Collection
     {
-        $reactionCollection = new ReactionCollection();
-        foreach ($data as $reactionData) {
-            $reactionCollection->addItem(Reaction::create($reactionData));
-        }
+        $collection = new Collection(Reaction::class);
+        $collection->createItemsFromArray($data);
 
-        return $reactionCollection;
+        return $collection;
     }
 }

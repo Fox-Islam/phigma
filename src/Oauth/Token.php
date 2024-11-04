@@ -13,7 +13,7 @@ readonly class Token
         private readonly int $expiresIn,
     ) {}
 
-    public function getUserId(): int
+    public function getUserId(): ?int
     {
         return $this->userId;
     }
