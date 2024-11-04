@@ -4,7 +4,9 @@ namespace Phox\Phigma;
 
 use Phox\Phigma\Requests\AuthenticatesRequest;
 use Phox\Phigma\Requests\Comments;
+use Phox\Phigma\Requests\DevResources;
 use Phox\Phigma\Requests\Files;
+use Phox\Phigma\Requests\Payments;
 use Phox\Phigma\Requests\Projects;
 use Phox\Phigma\Requests\Users;
 use Phox\Phigma\Requests\Versions;
@@ -34,5 +36,15 @@ final class Client extends AuthenticatesRequest
     public function comments(): Comments
     {
         return new Comments($this);
+    }
+
+    public function payments(): Payments
+    {
+        return new Payments($this);
+    }
+
+    public function devResources(): DevResources
+    {
+        return new DevResources($this);
     }
 }
