@@ -91,9 +91,9 @@ class Collection
     }
 
     /**
-     * @return Collection<T>|null
+     * @return Collection<T>
      */
-    public function createItemsFromArray(array $data): Collection|null
+    public function createItemsFromArray(array $data): Collection
     {
         $collection = new Collection($this->class);
         foreach ($data as $itemData) {
