@@ -28,7 +28,7 @@ readonly class Projects
             return $collection;
         }
 
-        return $collection->createItemsFromArray($body['projects']);
+        return $collection->create($body['projects']);
     }
 
     /**
@@ -50,6 +50,6 @@ readonly class Projects
             return $collection;
         }
 
-        return $collection->createItemsFromArray($body['files']);
+        return $collection->create($body['files']);
     }
 }

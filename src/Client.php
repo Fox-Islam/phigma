@@ -10,6 +10,7 @@ use Phox\Phigma\Requests\Payments;
 use Phox\Phigma\Requests\Projects;
 use Phox\Phigma\Requests\Users;
 use Phox\Phigma\Requests\Versions;
+use Phox\Phigma\Requests\Webhooks;
 
 final class Client extends AuthenticatesRequest
 {
@@ -46,5 +47,10 @@ final class Client extends AuthenticatesRequest
     public function devResources(): DevResources
     {
         return new DevResources($this);
+    }
+
+    public function webhooks(): Webhooks
+    {
+        return new Webhooks($this);
     }
 }

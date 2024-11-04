@@ -7,6 +7,8 @@ use Phox\Phigma\Models\Collection;
 
 class Branch
 {
+    public const ID_METHOD = 'getKey';
+
     public function __construct(
         private string|null $key = null,
         private string|null $name = null,

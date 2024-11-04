@@ -4,6 +4,8 @@ namespace Phox\Phigma\Models\DevResources;
 
 class DevResource
 {
+    public const ID_METHOD = 'getId';
+
     public function __construct(
         private string|null $id = null,
         private string|null $name = null,

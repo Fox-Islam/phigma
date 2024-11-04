@@ -27,7 +27,7 @@ class PaymentStatus
     public static function create(array $data): PaymentStatus
     {
         $paymentStatus = new PaymentStatus();
-        if (!isset($data['type'])) {
+        if (isset($data['type'])) {
             $paymentStatus->type($data['type']);
         }
 

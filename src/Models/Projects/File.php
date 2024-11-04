@@ -7,6 +7,8 @@ use Phox\Phigma\Models\Collection;
 
 class File
 {
+    public const ID_METHOD = 'getKey';
+
     public function __construct(
         private string|null $key = null,
         private string|null $name = null,
@@ -49,7 +51,7 @@ class File
         }
 
         $collection = new Collection(Branch::class);
-        $collection->createItemsFromArray($this->branches);
+        $collection->create($this->branches);
         return $collection;
     }
 

@@ -10,7 +10,7 @@ A PHP SDK for interacting with Figma's REST API
 - [x] Version history - Models and endpoints implemented
 - [x] Projects - Models and endpoints implemented
 - [ ] Components and styles - Not started
-- [ ] Webhooks V2 - Not started
+- [x] Webhooks V2 - Models and endpoints implemented
 - [x] Payments - Models and endpoints implemented
 - [x] Dev Resources - Models and endpoints implemented
 - [ ] Activity Logs - Not started (Currently unplanned, only supported in Enterprise plans)

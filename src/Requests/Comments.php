@@ -7,7 +7,7 @@ use JsonException;
 use Phox\Phigma\Client;
 use Phox\Phigma\Models\Collection;
 use Phox\Phigma\Models\Comments\Comment;
-use Phox\Phigma\Models\Comments\ReactionCollection;
+use Phox\Phigma\Models\Comments\Reaction;
 use Phox\Phigma\Models\Properties\FrameOffset;
 use Phox\Phigma\Models\Properties\FrameOffsetRegion;
 use Phox\Phigma\Models\Properties\Region;
@@ -42,7 +42,7 @@ readonly class Comments
             return $collection;
         }
 
-        return $collection->createItemsFromArray($body['comments']);
+        return $collection->create($body['comments']);
     }
 
     /**
@@ -51,7 +51,7 @@ readonly class Comments
      * @param string $message The text contents of the comment to post
      * @param string|null $commentId The id of the comment to reply to, if any
      * @param Vector|FrameOffset|Region|FrameOffsetRegion|array|null $clientMeta
-     * @return Comment
+     * @return Comment|null
      * @throws GuzzleException
      * @throws JsonException
      */
@@ -60,7 +60,7 @@ readonly class Comments
         string $message,
         string $commentId = null,
         Vector|FrameOffset|Region|FrameOffsetRegion|array|null $clientMeta = null
-    ): Comment {
+    ): ?Comment {
         $bodyParams = [
             'message' => $message,
         ];
@@ -80,7 +80,7 @@ readonly class Comments
         ]);
 
         if (empty($body)) {
-            return new Comment();
+            return null;
         }
 
         return Comment::create($body);
@@ -119,7 +119,7 @@ readonly class Comments
             return null;
         }
 
-        $body['reactions'] = ReactionCollection::create($body['reactions']);
+        $body['reactions'] = (new Collection(Reaction::class))->create($body['reactions']);
         return $body;
     }
 

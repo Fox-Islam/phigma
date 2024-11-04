@@ -7,6 +7,8 @@ use Phox\Phigma\Models\User;
 
 class Reaction
 {
+    public const ID_METHOD = 'getEmoji';
+
     public function __construct(
         private array|null $user = null,
         private string|null $emoji = null,

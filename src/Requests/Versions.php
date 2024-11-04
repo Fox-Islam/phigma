@@ -27,6 +27,6 @@ readonly class Versions
             return $collection;
         }
 
-        return $collection->createItemsFromArray($body['versions']);
+        return $collection->create($body['versions']);
     }
 }

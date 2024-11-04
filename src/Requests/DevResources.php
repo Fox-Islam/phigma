@@ -38,7 +38,7 @@ readonly class DevResources
             return $collection;
         }
 
-        return $collection->createItemsFromArray($body['dev_resources']);
+        return $collection->create($body['dev_resources']);
     }
 
     /**
@@ -62,7 +62,7 @@ readonly class DevResources
             return [];
         }
 
-        $body['links_created'] = (new Collection(DevResource::class))->createItemsFromArray($body['links_created']);
+        $body['links_created'] = (new Collection(DevResource::class))->create($body['links_created']);
         return $body;
     }
 

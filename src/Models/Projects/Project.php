@@ -4,6 +4,8 @@ namespace Phox\Phigma\Models\Projects;
 
 class Project
 {
+    public const ID_METHOD = 'getId';
+
     public function __construct(
         private ?int $id = null,
         private ?string $name = null,

@@ -59,8 +59,12 @@ class Collection
     /**
      * @return Collection<T>
      */
-    public function removeItem(mixed $itemToRemove, string $identifierMethodName): Collection
+    public function removeItem(mixed $itemToRemove, string $identifierMethodName = null): Collection
     {
+        if (! $identifierMethodName) {
+            $identifierMethodName = $this->class::ID_METHOD;
+        }
+
         $itemIdentifier = $itemToRemove->$identifierMethodName();
         if (! $itemIdentifier) {
             return $this;
@@ -93,7 +97,7 @@ class Collection
     /**
      * @return Collection<T>
      */
-    public function createItemsFromArray(array $data): Collection
+    public function create(array $data): Collection
     {
         $collection = new Collection($this->class);
         foreach ($data as $itemData) {

@@ -4,6 +4,8 @@ namespace Phox\Phigma\Models\Nodes;
 
 class Node
 {
+    public const ID_METHOD = 'getId';
+
     public function __construct(
         private ?string $id = null,
         private ?string $name = null,

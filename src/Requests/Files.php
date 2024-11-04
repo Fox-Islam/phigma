@@ -21,7 +21,7 @@ readonly class Files
      * @param string|null $geometry Set to "paths" to export vector data
      * @param string[]|null $pluginData List of plugin IDs and/or the string "shared". Any data present in the document written by those plugins will be included in the result in the `pluginData` and `sharedPluginData` properties
      * @param bool|null $branchData If true, returns branch metadata for the requested file
-     * @return File
+     * @return File|null
      * @throws GuzzleException
      */
     public function getFile(
@@ -32,7 +32,7 @@ readonly class Files
         string $geometry = null,
         array $pluginData = null,
         bool $branchData = null,
-    ): File {
+    ): ?File {
         $parameters = [];
         if ($version) {
             $parameters['version'] = $version;
@@ -58,7 +58,7 @@ readonly class Files
         ]);
 
         if (empty($body)) {
-            return new File();
+            return null;
         }
 
         return File::create($body);

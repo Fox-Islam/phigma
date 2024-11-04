@@ -102,7 +102,7 @@ class File
         }
 
         $collection = new Collection(Branch::class);
-        $collection->createItemsFromArray($this->branches);
+        $collection->create($this->branches);
         return $collection;
     }
 

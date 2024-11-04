@@ -19,15 +19,16 @@ readonly class Payments
      * @param string $pluginPaymentToken Token returned from "getPluginPaymentTokenAsync" in the plugin payments API
      * @throws GuzzleException
      */
-    public function getPaymentsViaPaymentToken(string $pluginPaymentToken): PaymentInformation
+    public function getPaymentsViaPaymentToken(string $pluginPaymentToken): ?PaymentInformation
     {
         $body = $this->client->get('https://api.figma.com/v1/payments', [
             'query' => [
                 'plugin_payment_token' => $pluginPaymentToken,
             ],
         ]);
+
         if (empty($body)) {
-            return new PaymentInformation();
+            return null;
         }
 
         return PaymentInformation::create($body);
@@ -39,10 +40,9 @@ readonly class Payments
      * @param int $communityFileId The ID of the Community file to query a user's payment information on
      * @param int $pluginId The ID of the plugin to query a user's payment information on
      * @param int $widgetId The ID of the widget to query a user's payment information on
-     * @return PaymentInformation
      * @throws GuzzleException
      */
-    public function getPaymentsViaUserId(int $userId, int $communityFileId, int $pluginId, int $widgetId): PaymentInformation
+    public function getPaymentsViaUserId(int $userId, int $communityFileId, int $pluginId, int $widgetId): ?PaymentInformation
     {
         $body = $this->client->get('https://api.figma.com/v1/payments', [
             'query' => [
@@ -53,7 +53,7 @@ readonly class Payments
             ],
         ]);
         if (empty($body)) {
-            return new PaymentInformation();
+            return null;
         }
 
         return PaymentInformation::create($body);
