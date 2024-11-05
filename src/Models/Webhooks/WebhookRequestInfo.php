@@ -3,6 +3,7 @@
 namespace Phox\Phigma\Models\Webhooks;
 
 use Carbon\Carbon;
+use Phox\Phigma\Models\Webhooks\Events\Event;
 
 class WebhookRequestInfo
 {
@@ -17,12 +18,12 @@ class WebhookRequestInfo
         return $this->endpoint;
     }
 
-    public function getPayload(): ?Payload
+    public function getPayload(): ?Event
     {
         if (! $this->payload) {
             return null;
         }
-        return Payload::create($this->payload);
+        return Event::create($this->payload);
     }
 
     public function getSentAt(): ?Carbon

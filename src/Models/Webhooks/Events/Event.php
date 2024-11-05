@@ -1,12 +1,14 @@
 <?php
 
-namespace Phox\Phigma\Models\Webhooks;
+namespace Phox\Phigma\Models\Webhooks\Events;
 
 use Carbon\Carbon;
 use Phox\Phigma\Models\Collection;
 use Phox\Phigma\Models\User;
+use Phox\Phigma\Models\Webhooks\CommentFragment;
+use Phox\Phigma\Models\Webhooks\LibraryItemData;
 
-class Payload
+class Event
 {
     public const string ID_METHOD = 'getWebhookId';
 
@@ -263,155 +265,155 @@ class Payload
         return Carbon::parse($this->resolved_at);
     }
 
-    public function eventType(string $eventType): Payload
+    public function eventType(string $eventType): Event
     {
         $this->event_type = $eventType;
         return $this;
     }
 
-    public function fileKey(string $fileKey): Payload
+    public function fileKey(string $fileKey): Event
     {
         $this->file_key = $fileKey;
         return $this;
     }
 
-    public function fileName(string $fileName): Payload
+    public function fileName(string $fileName): Event
     {
         $this->file_name = $fileName;
         return $this;
     }
 
-    public function passcode(string $passcode): Payload
+    public function passcode(string $passcode): Event
     {
         $this->passcode = $passcode;
         return $this;
     }
 
-    public function webhookId(int $webhookId): Payload
+    public function webhookId(int $webhookId): Event
     {
         $this->webhook_id = $webhookId;
         return $this;
     }
 
-    public function timestamp(string $timestamp): Payload
+    public function timestamp(string $timestamp): Event
     {
         $this->timestamp = $timestamp;
         return $this;
     }
 
-    public function createdAt(string $createdAt): Payload
+    public function createdAt(string $createdAt): Event
     {
         $this->created_at = $createdAt;
         return $this;
     }
 
-    public function triggeredBy(array $triggeredBy): Payload
+    public function triggeredBy(array $triggeredBy): Event
     {
         $this->triggered_by = $triggeredBy;
         return $this;
     }
 
-    public function description(string $description): Payload
+    public function description(string $description): Event
     {
         $this->description = $description;
         return $this;
     }
 
-    public function label(string $label): Payload
+    public function label(string $label): Event
     {
         $this->label = $label;
         return $this;
     }
 
-    public function versionId(string $versionId): Payload
+    public function versionId(string $versionId): Event
     {
         $this->version_id = $versionId;
         return $this;
     }
 
-    public function createdComponents(array $createdComponents): Payload
+    public function createdComponents(array $createdComponents): Event
     {
         $this->created_components = $createdComponents;
         return $this;
     }
 
-    public function createdStyles(array $createdStyles): Payload
+    public function createdStyles(array $createdStyles): Event
     {
         $this->created_styles = $createdStyles;
         return $this;
     }
 
-    public function createdVariables(array $createdVariables): Payload
+    public function createdVariables(array $createdVariables): Event
     {
         $this->created_variables = $createdVariables;
         return $this;
     }
 
-    public function modifiedComponents(array $modifiedComponents): Payload
+    public function modifiedComponents(array $modifiedComponents): Event
     {
         $this->modified_components = $modifiedComponents;
         return $this;
     }
 
-    public function modifiedStyles(array $modifiedStyles): Payload
+    public function modifiedStyles(array $modifiedStyles): Event
     {
         $this->modified_styles = $modifiedStyles;
         return $this;
     }
 
-    public function modifiedVariables(array $modifiedVariables): Payload
+    public function modifiedVariables(array $modifiedVariables): Event
     {
         $this->modified_variables = $modifiedVariables;
         return $this;
     }
 
-    public function deletedComponents(array $deletedComponents): Payload
+    public function deletedComponents(array $deletedComponents): Event
     {
         $this->deleted_components = $deletedComponents;
         return $this;
     }
 
-    public function deletedStyles(array $deletedStyles): Payload
+    public function deletedStyles(array $deletedStyles): Event
     {
         $this->deleted_styles = $deletedStyles;
         return $this;
     }
 
-    public function deletedVariables(array $deletedVariables): Payload
+    public function deletedVariables(array $deletedVariables): Event
     {
         $this->deleted_variables = $deletedVariables;
         return $this;
     }
 
-    public function comment(array $comment): Payload
+    public function comment(array $comment): Event
     {
         $this->comment = $comment;
         return $this;
     }
 
-    public function commentId(int $commentId): Payload
+    public function commentId(int $commentId): Event
     {
         $this->comment_id = $commentId;
         return $this;
     }
-    public function mentions(array $mentions): Payload
+    public function mentions(array $mentions): Event
     {
         $this->mentions = $mentions;
         return $this;
     }
 
-    public function orderId(int $orderId): Payload
+    public function orderId(int $orderId): Event
     {
         $this->order_id = $orderId;
         return $this;
     }
-    public function parentId(int $parentId): Payload
+    public function parentId(int $parentId): Event
     {
         $this->parent_id = $parentId;
         return $this;
     }
 
-    public function resolvedAt(string $resolvedAt): Payload
+    public function resolvedAt(string $resolvedAt): Event
     {
         $this->resolved_at = $resolvedAt;
         return $this;
@@ -422,89 +424,89 @@ class Payload
         return get_object_vars($this);
     }
 
-    public static function create(array $data): Payload
+    public static function create(array $data): Event
     {
-        $payload = new Payload();
+        $event = new Event();
 
         if (isset($data['event_type'])) {
-            $payload->eventType($data['event_type']);
+            $event->eventType($data['event_type']);
         }
         if (isset($data['file_key'])) {
-            $payload->fileKey($data['file_key']);
+            $event->fileKey($data['file_key']);
         }
         if (isset($data['file_name'])) {
-            $payload->fileName($data['file_name']);
+            $event->fileName($data['file_name']);
         }
         if (isset($data['passcode'])) {
-            $payload->passcode($data['passcode']);
+            $event->passcode($data['passcode']);
         }
         if (isset($data['webhook_id'])) {
-            $payload->webhookId($data['webhook_id']);
+            $event->webhookId($data['webhook_id']);
         }
         if (isset($data['timestamp'])) {
-            $payload->timestamp($data['timestamp']);
+            $event->timestamp($data['timestamp']);
         }
         if (isset($data['created_at'])) {
-            $payload->createdAt($data['created_at']);
+            $event->createdAt($data['created_at']);
         }
         if (isset($data['triggered_by'])) {
-            $payload->triggeredBy($data['triggered_by']);
+            $event->triggeredBy($data['triggered_by']);
         }
         if (isset($data['description'])) {
-            $payload->description($data['description']);
+            $event->description($data['description']);
         }
         if (isset($data['label'])) {
-            $payload->label($data['label']);
+            $event->label($data['label']);
         }
         if (isset($data['version_id'])) {
-            $payload->versionId($data['version_id']);
+            $event->versionId($data['version_id']);
         }
         if (isset($data['created_components'])) {
-            $payload->createdComponents($data['created_components']);
+            $event->createdComponents($data['created_components']);
         }
         if (isset($data['created_styles'])) {
-            $payload->createdStyles($data['created_styles']);
+            $event->createdStyles($data['created_styles']);
         }
         if (isset($data['created_variables'])) {
-            $payload->createdVariables($data['created_variables']);
+            $event->createdVariables($data['created_variables']);
         }
         if (isset($data['modified_components'])) {
-            $payload->modifiedComponents($data['modified_components']);
+            $event->modifiedComponents($data['modified_components']);
         }
         if (isset($data['modified_styles'])) {
-            $payload->modifiedStyles($data['modified_styles']);
+            $event->modifiedStyles($data['modified_styles']);
         }
         if (isset($data['modified_variables'])) {
-            $payload->modifiedVariables($data['modified_variables']);
+            $event->modifiedVariables($data['modified_variables']);
         }
         if (isset($data['deleted_components'])) {
-            $payload->deletedComponents($data['deleted_components']);
+            $event->deletedComponents($data['deleted_components']);
         }
         if (isset($data['deleted_styles'])) {
-            $payload->deletedStyles($data['deleted_styles']);
+            $event->deletedStyles($data['deleted_styles']);
         }
         if (isset($data['deleted_variables'])) {
-            $payload->deletedVariables($data['deleted_variables']);
+            $event->deletedVariables($data['deleted_variables']);
         }
         if (isset($data['comment'])) {
-            $payload->comment($data['comment']);
+            $event->comment($data['comment']);
         }
         if (isset($data['comment_id'])) {
-            $payload->commentId($data['comment_id']);
+            $event->commentId($data['comment_id']);
         }
         if (isset($data['mentions'])) {
-            $payload->mentions($data['mentions']);
+            $event->mentions($data['mentions']);
         }
         if (isset($data['order_id'])) {
-            $payload->orderId($data['order_id']);
+            $event->orderId($data['order_id']);
         }
         if (isset($data['parent_id'])) {
-            $payload->parentId($data['parent_id']);
+            $event->parentId($data['parent_id']);
         }
         if (isset($data['resolved_at'])) {
-            $payload->resolvedAt($data['resolved_at']);
+            $event->resolvedAt($data['resolved_at']);
         }
 
-        return $payload;
+        return $event;
     }
 }

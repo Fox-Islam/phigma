@@ -3,18 +3,18 @@
 namespace Phox\Phigma\Models;
 
 /**
- * @template T
+ * @template ItemType
  */
 class Collection
 {
     public const string ID_METHOD = 'getKey';
     /**
-     * @var array<string|int, T>
+     * @var array<string|int, ItemType>
      */
-    private array $itemHashMap = [];
+    private array $itemKeyMap = [];
 
     /**
-     * @param class-string<T> $class
+     * @param class-string<ItemType> $class
      */
     public function __construct(
         private readonly string $class,
@@ -22,7 +22,7 @@ class Collection
     ) {}
 
     /**
-     * @return array<T>|null
+     * @return array<ItemType>|null
      */
     public function getItems(): ?array
     {
@@ -30,7 +30,7 @@ class Collection
     }
 
     /**
-     * @return T|null
+     * @return ItemType|null
      */
     public function getItem(int $index)
     {
@@ -38,7 +38,7 @@ class Collection
     }
 
     /**
-     * @return Collection<T>
+     * @return Collection<ItemType>
      */
     public function items(array $items): Collection
     {
@@ -50,7 +50,7 @@ class Collection
     }
 
     /**
-     * @return Collection<T>
+     * @return Collection<ItemType>
      */
     public function addItem(mixed $item): Collection
     {
@@ -61,13 +61,13 @@ class Collection
         $this->items[] = $item;
 
         $identifierMethodName = $this->class::ID_METHOD;
-        $this->itemHashMap[$item->$identifierMethodName()] = $item;
+        $this->itemKeyMap[$item->$identifierMethodName()] = $item;
 
         return $this;
     }
 
     /**
-     * @return Collection<T>
+     * @return Collection<ItemType>
      */
     public function removeItem(mixed $itemToRemove, string $identifierMethodName = null): Collection
     {
@@ -82,7 +82,7 @@ class Collection
 
         foreach ($this->items as $index => $item) {
             if ($item->$identifierMethodName() === $itemIdentifier) {
-                unset($this->items[$index], $this->itemHashMap[$itemIdentifier]);
+                unset($this->items[$index], $this->itemKeyMap[$itemIdentifier]);
                 return $this;
             }
         }
@@ -113,11 +113,11 @@ class Collection
     }
 
     /**
-     * @return T|null
+     * @return ItemType|null
      */
     public function find(string|int $identifier)
     {
-        return $this->itemHashMap[$identifier] ?? null;
+        return $this->itemKeyMap[$identifier] ?? null;
     }
 
     public function toArray(): array
@@ -135,8 +135,17 @@ class Collection
     }
 
     /**
-     * @param class-string<T> $class
-     * @return Collection<T>
+     * @param class-string<ItemType> $class
+     * @return Collection<ItemType>
+     */
+    public static function of(string $class): Collection
+    {
+        return new Collection($class);
+    }
+
+    /**
+     * @param class-string<ItemType> $class
+     * @return Collection<ItemType>
      */
     public static function create(string $class, array $data): Collection
     {
