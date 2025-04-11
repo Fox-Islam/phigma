@@ -3,6 +3,9 @@
 namespace Phox\Phigma\Models\Comments;
 
 use Carbon\Carbon;
+use GuzzleHttp\Exception\GuzzleException;
+use JsonException;
+use Phox\Phigma\Client;
 use Phox\Phigma\Models\User;
 
 class Reaction
@@ -75,5 +78,30 @@ class Reaction
         }
 
         return $reaction;
+    }
+
+    /**
+     * @throws GuzzleException
+     * @throws JsonException
+     */
+    public function post(Client $client, Comment $comment): array
+    {
+        return $client->comments()->postReaction(
+            $comment->getFileKey(),
+            $comment->getId(),
+            $this->getEmoji(),
+        );
+    }
+
+    /**
+     * @throws GuzzleException
+     */
+    public function delete(Client $client, Comment $comment): array
+    {
+        return $client->comments()->deleteReaction(
+            $comment->getFileKey(),
+            $comment->getId(),
+            $this->getEmoji(),
+        );
     }
 }

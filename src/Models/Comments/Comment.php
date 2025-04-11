@@ -3,6 +3,9 @@
 namespace Phox\Phigma\Models\Comments;
 
 use Carbon\Carbon;
+use GuzzleHttp\Exception\GuzzleException;
+use JsonException;
+use Phox\Phigma\Client;
 use Phox\Phigma\Models\Collection;
 use Phox\Phigma\Models\Properties\FrameOffset;
 use Phox\Phigma\Models\Properties\FrameOffsetRegion;
@@ -22,6 +25,7 @@ class Comment
         private array|null $user = null,
         private string|null $created_at = null,
         private string|null $resolved_at = null,
+        private string|null $message = null,
         private int|null $order_id = null,
         private array|null $reactions = null,
     ) {}
@@ -97,6 +101,11 @@ class Comment
         return Carbon::parse($this->resolved_at);
     }
 
+    public function getMessage(): ?string
+    {
+        return $this->message;
+    }
+
     public function getOrderId(): ?int
     {
         return $this->order_id;
@@ -156,6 +165,12 @@ class Comment
         return $this;
     }
 
+    public function message(string $message): Comment
+    {
+        $this->message = $message;
+        return $this;
+    }
+
     public function orderId(int $orderId): Comment
     {
         $this->order_id = $orderId;
@@ -198,6 +213,9 @@ class Comment
         if (isset($data['resolved_at'])) {
             $comment->resolvedAt($data['resolved_at']);
         }
+        if (isset($data['message'])) {
+            $comment->message($data['message']);
+        }
         if (isset($data['order_id'])) {
             $comment->orderId($data['order_id']);
         }
@@ -206,5 +224,30 @@ class Comment
         }
 
         return $comment;
+    }
+
+    /**
+     * @throws GuzzleException
+     * @throws JsonException
+     */
+    public function post(Client $client): ?Comment
+    {
+        return $client->comments()->createComment(
+            $this->getFileKey(),
+            $this->getMessage(),
+            $this->getParentId(),
+            $this->getClientMeta(),
+        );
+    }
+
+    /**
+     * @throws GuzzleException
+     */
+    public function delete(Client $client): array
+    {
+        return $client->comments()->deleteComment(
+            $this->getFileKey(),
+            $this->getId(),
+        );
     }
 }
